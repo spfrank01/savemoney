@@ -1,0 +1,64 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<title>รายรับรายจ่าย</title>
+</head>
+<body>
+
+<h1>บัญชีรายรับรายจ่าย</h1>
+
+{% if latest_detail_list %}
+	<table border=1 style="width:80%">
+	<tr>
+	    <th>วันที่</th>
+	    <th>รายการ</th>
+	    <th>รายรับ</th>
+	    <th>รายจ่าย</th>
+	    <th>คงเหลือ</th>
+	</tr>
+
+    {% for SaveMoney in latest_detail_list %}
+    <tr>
+    	<td>{{SaveMoney.dateTime}}</td>
+        <td>{{ SaveMoney.detail }}</td> 
+        {% if SaveMoney.money >= 0 %}
+        	<td>{{SaveMoney.money}}</td>
+        	<td></td>
+        {% else %}
+        	<td></td>
+        	<td>{{SaveMoney.money}}</td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+
+<br>
+<table style="width:80%">
+<td align="left"> <a href="url">LEFT </a></td>
+<td align="right"><a href="url">RIGHT</a></td>
+</table>
+<br>
+<table border=1 style="width:80%">
+    <tr>
+        <th> รายการ </th>
+        <th> รับ</th>
+        <th> จ่าย</th>
+        <th> จำนวนเงิน</th>
+        <th> วันที่(ถ้าต้องการเปลี่ยน)</th>
+        <th> เพิ่ม</th>
+    </tr>
+    <form><tr>
+        <th> <input type="text" name="list"> </th>
+        <th> <input type="radio" name="gender" value="income"> </th>
+        <th> <input type="radio" name="gender" value="out"> </th>
+        <th> <input type="text" name="moneyValue"> </th>
+        <td>  </td>
+        <th> <input type="submit" value="Submit"> </th>
+    </tr></form>
+</table>
+
+</body>
+</html>
