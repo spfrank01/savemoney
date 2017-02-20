@@ -14,7 +14,6 @@
 	    <th>รายการ</th>
 	    <th>รายรับ</th>
 	    <th>รายจ่าย</th>
-	    <th>คงเหลือ</th>
 	</tr>
 
     {% for SaveMoney in latest_detail_list %}
@@ -22,23 +21,34 @@
     	<td>{{SaveMoney.dateTime}}</td>
         <td>{{ SaveMoney.detail }}</td> 
         {% if SaveMoney.money >= 0 %}
-        	<td>{{SaveMoney.money}}</td>
+        	<td><font color="green">{{SaveMoney.money}}</font></td>
         	<td></td>
         {% else %}
         	<td></td>
-        	<td>{{SaveMoney.money}}</td>
+        	<td><font color="red">{{SaveMoney.money}}</font></td>
         {% endif %}
     </tr>
     {% endfor %}
     </table>
+    <table>
+    	<tr>Total : {{total}}</tr>
+    </table>
 {% else %}
-    <p>No polls are available.</p>
+    <p>No Detail</p>
 {% endif %}
-
 <br>
 <table style="width:80%">
-<td align="left"> <a href="url">LEFT </a></td>
-<td align="right"><a href="url">RIGHT</a></td>
+{% if page > 1 %}
+	<td align="left">
+		<a href="{% url 'SaveMoney:newerPage' page %}">Newer</a>
+	</td>
+{% endif %}
+
+{% if page < lastPage %}
+	<td align="right"> 
+		<a href="{% url 'SaveMoney:olderPage' page %}">Older </a>
+	</td>
+{% endif %}
 </table>
 <br>
 <table border=1 style="width:80%">
@@ -50,10 +60,13 @@
         <th> วันที่(ถ้าต้องการเปลี่ยน)</th>
         <th> เพิ่ม</th>
     </tr>
-    <form><tr>
-        <th> <input type="text" name="list"> </th>
-        <th> <input type="radio" name="gender" value="income"> </th>
-        <th> <input type="radio" name="gender" value="out"> </th>
+    <form action="{% url 'SaveMoney:save' %}" method="post" target="_self">
+{% csrf_token %}
+
+    <tr>
+        <th> <input type="text" name="detail"> </th>
+        <th> <input type="radio" name="moneyType" value="income"> </th>
+        <th> <input type="radio" name="moneyType" value="out"> </th>
         <th> <input type="text" name="moneyValue"> </th>
         <td>  </td>
         <th> <input type="submit" value="Submit"> </th>
