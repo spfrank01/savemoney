@@ -2,18 +2,121 @@
 <html>
 <head>
 <title>รายรับรายจ่าย</title>
+<style>
+	body {
+		color: blue;
+		background-color: #dff2e5;
+	}
+
+	a:link, a:visited {
+	    background-color:  #FF6633 ;
+	    color: white;
+	    padding: 14px 25px;
+	    text-align: center;
+	    text-decoration: none; 
+	}
+
+	a:hover, a:active {
+	    background-color: #FF0033;
+	}
+	.left {
+		float: left;
+		border: 0px;
+	}
+	.right {
+		float: right;
+		border: 0px;
+	}
+	.total {
+		background-color: #66FF00 ;
+		font-family: "Times New Roman", Times, serif;
+		font-size: 20px;
+		width: 10%;
+		border: 0px;
+	}
+	table {
+		border: 1px solid black;
+	    border-collapse: collapse;
+	}
+	th {
+	    background-color: #009933;
+	    border: 1px solid black;
+	    color: white;
+	}
+	td {
+		border: 1px solid black;
+	}
+
+	tr:nth-child(even) {background-color: #bfe6cc}
+
+
+	table.table1 {
+		
+		border-bottom: 1px solid #ddd;
+		font-family: "Times New Roman", Times, serif;
+		font-size: 20px;
+		width: 90%;
+		text-align: center;
+	}
+	
+	.changePage {
+		width: 90%;
+		border: 0px solid black;
+	}
+	table.saveDetail {
+		background-color: #FF99FF;
+		font-family: "Times New Roman", Times, serif;
+		font-size: 20px;
+		width: 90%;
+		text-align:center;
+	}
+
+	div.income {
+	    font-style: normal;
+	    font-family: "Times New Roman", Times, serif;
+	    color: green;
+	    font-size: 20px;
+	}
+
+	div.out {
+	    font-style: normal;
+	    font-family: "Comic Sans MS", Times, serif;
+	    color: red;
+	    font-size: 20px;
+	}
+
+	input[type=text] {
+	    border: 2px solid #20a64d;
+	    border-radius: 4px;
+
+	}	
+	input[type=number] {
+	    border: 2px solid #20a64d;
+	    border-radius: 4px;
+	}
+	input[type=submit] {
+	    padding:5px 15px; 
+	    background:#FF6633;
+	    color: white; 
+	    border:0 none;
+	    cursor:pointer;
+	    -webkit-border-radius: 5px;
+	    border-radius: 5px; 
+	}
+</style>
 </head>
 <body>
 
 <h1>บัญชีรายรับรายจ่าย</h1>
 
+
 {% if latest_detail_list %}
-	<table border=1 style="width:80%">
+	<table class="table1" >
 	<tr>
-	    <th>วันที่</th>
+	    <th width="20%">วันที่</th>
 	    <th>รายการ</th>
-	    <th>รายรับ</th>
-	    <th>รายจ่าย</th>
+	    <th width="15%">รายรับ</th>
+	    <th width="15%">รายจ่าย</th>
 	</tr>
 
     {% for SaveMoney in latest_detail_list %}
@@ -21,37 +124,38 @@
     	<td>{{SaveMoney.dateTime}}</td>
         <td>{{ SaveMoney.detail }}</td> 
         {% if SaveMoney.money >= 0 %}
-        	<td><font color="green">{{SaveMoney.money}}</font></td>
-        	<td></td>
+        	<div class="income"><td><font color="green">{{SaveMoney.money}}</font></td>
+        	<td></td></div>
         {% else %}
-        	<td></td>
-        	<td><font color="red">{{SaveMoney.money}}</font></td>
+        	<div class="out"><td></td>
+        	<td><font color="red">{{SaveMoney.money}}</font></td></div>
         {% endif %}
     </tr>
     {% endfor %}
     </table>
-    <table>
-    	<tr>Total : {{total}}</tr>
+    <table class="total">
+    	<tr ><td >Total : {{total}}</td></tr>
     </table>
 {% else %}
     <p>No Detail</p>
 {% endif %}
 <br>
-<table style="width:80%">
+<table class="changePage">
 {% if page > 1 %}
-	<td align="left">
-		<a href="{% url 'SaveMoney:newerPage' page %}">Newer</a>
-	</td>
+
+		<th class="left"><a href="{% url 'SaveMoney:newerPage' page %}">Newer</a></th>
+
 {% endif %}
 
 {% if page < lastPage %}
-	<td align="right"> 
-		<a href="{% url 'SaveMoney:olderPage' page %}">Older </a>
-	</td>
+
+		<th class="right"><a href="{% url 'SaveMoney:olderPage' page %}">Older </a></th>
+
 {% endif %}
 </table>
 <br>
-<table border=1 style="width:80%">
+<br>
+<table class="saveDetail">
     <tr>
         <th> รายการ </th>
         <th> รับ</th>
@@ -62,14 +166,13 @@
     </tr>
     <form action="{% url 'SaveMoney:save' %}" method="post" target="_self">
 {% csrf_token %}
-
     <tr>
-        <th> <input type="text" name="detail"> </th>
-        <th> <input type="radio" name="moneyType" value="income"> </th>
-        <th> <input type="radio" name="moneyType" value="out"> </th>
-        <th> <input type="text" name="moneyValue"> </th>
+        <td><input type="text" name="detail"> </td>
+        <td> <input type="radio" name="moneyType" value="income"> </td>
+        <td> <input type="radio" name="moneyType" value="out"> </td>
+        <td> <input type="number" name="moneyValue"> </td>
         <td>  </td>
-        <th> <input type="submit" value="Submit"> </th>
+        <td> <input type="submit" value="Submit"> </td>
     </tr></form>
 </table>
 
