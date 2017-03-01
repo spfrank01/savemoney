@@ -1,109 +1,10 @@
+{% load static %}
  <!DOCTYPE html>
 <html>
 <head>
 <title>รายรับรายจ่าย</title>
-<style>
-	body {
-		color: blue;
-		background-color: #dff2e5;
-		text-align: center;
-	}
+<link rel="stylesheet" type="text/css" href="{% static 'savemoney/style.css' %}" />
 
-	a:link, a:visited {
-	    background-color:  #FF6633 ;
-	    color: white;
-	    padding: 14px 25px;
-	    text-align: center;
-	    text-decoration: none; 
-	}
-
-	a:hover, a:active {
-	    background-color: #FF0033;
-	}
-	.left {
-		float: left;
-		border: 0px;
-	}
-	.right {
-		float: right;
-		border: 0px;
-	}
-	.total {
-		background-color: #66FF00 ;
-		font-family: "Times New Roman", Times, serif;
-		font-size: 20px;
-		width: 10%;
-		border: 0px;
-	}
-	table {
-	    border: 1px solid black;
-	    border-collapse: collapse;
-	}
-	th {
-	    background-color: #009933;
-	    border: 1px solid black;
-	    color: white;
-	}
-	td {
-		border: 1px solid black;
-	}
-
-	tr:nth-child(even) {background-color: #bfe6cc}
-
-
-	table.table1 {		
-		border-bottom: 1px solid #ddd;
-		font-family: "Times New Roman", Times, serif;
-		font-size: 20px;
-		width: 100%;
-		text-align: center;
-	}
-	
-	.changePage {
-		width: 100%;
-		border: 0px solid black;
-	}
-	.saveDetail {
-		background-color: #FF99FF;
-		font-family: "Times New Roman", Times, serif;
-		font-size: 20px;
-		width: 100%;
-		text-align:center;
-	}
-
-	div.income {
-	    font-style: normal;
-	    font-family: "Times New Roman", Times, serif;
-	    color: green;
-	    font-size: 20px;
-	}
-
-	div.out {
-	    font-style: normal;
-	    font-family: "Comic Sans MS", Times, serif;
-	    color: red;
-	    font-size: 20px;
-	}
-
-	input[type=text] {
-	    border: 2px solid #20a64d;
-	    border-radius: 4px;
-
-	}	
-	input[type=number] {
-	    border: 2px solid #20a64d;
-	    border-radius: 4px;
-	}
-	input[type=submit] {
-	    padding:5px 15px; 
-	    background:#FF6633;
-	    color: white; 
-	    border:0 none;
-	    cursor:pointer;
-	    -webkit-border-radius: 5px;
-	    border-radius: 5px; 
-	}
-</style>
 </head>
 <body>
 
@@ -122,13 +23,13 @@
     {% for SaveMoney in latest_detail_list %}
     <tr>
     	<td>{{SaveMoney.dateTime}}</td>
-        <td>{{ SaveMoney.detail }}</td> 
+        <td>{{ SaveMoney.detail }}</td>
         {% if SaveMoney.money >= 0 %}
         	<div class="income"><td><font color="green">{{SaveMoney.money}}</font></td>
         	<td></td></div>
         {% else %}
         	<div class="out"><td></td>
-        	<td><font color="red">{{SaveMoney.money}}</font></td></div>
+        	<td><font color="red">{{SaveMoney.get_abs}}</font></td></div>
         {% endif %}
     </tr>
     {% endfor %}
@@ -175,6 +76,7 @@
         <td> <input type="submit" value="Submit"> </td>
     </tr></form>
 </table>
-
+<br>
+<div class="saveCSVFile"><a href="{% url 'SaveMoney:saveCSVFile' %}">Download CSV File</a></div>
 </body>
 </html>

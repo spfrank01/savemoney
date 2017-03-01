@@ -1,4 +1,4 @@
-body {
+    body {
 		color: blue;
 		background-color: #dff2e5;
 		text-align: center;
@@ -9,7 +9,7 @@ body {
 	    color: white;
 	    padding: 14px 25px;
 	    text-align: center;
-	    text-decoration: none; 
+	    text-decoration: none;
 	}
 
 	a:hover, a:active {
@@ -47,14 +47,14 @@ body {
 
 
 	table.table1 {
-		
+
 		border-bottom: 1px solid #ddd;
 		font-family: "Times New Roman", Times, serif;
 		font-size: 20px;
 		width: 100%;
 		text-align: center;
 	}
-	
+
 	.changePage {
 		width: 100%;
 		border: 0px solid black;
@@ -80,22 +80,28 @@ body {
 	    color: red;
 	    font-size: 20px;
 	}
-
+	div.saveCSVFile {
+	    color: red;
+	    text-align:left;
+	     /*font-size: 100px;*/
+	}
 	input[type=text] {
 	    border: 2px solid #20a64d;
 	    border-radius: 4px;
 
-	}	
+	}
 	input[type=number] {
 	    border: 2px solid #20a64d;
 	    border-radius: 4px;
 	}
 	input[type=submit] {
-	    padding:5px 15px; 
+	    padding:5px 15px;
 	    background:#FF6633;
-	    color: white; 
+	    color: white;
 	    border:0 none;
 	    cursor:pointer;
 	    -webkit-border-radius: 5px;
-	    border-radius: 5px; 
+	    border-radius: 5px;
 	}
+
+

@@ -8,5 +8,6 @@ class SaveMoney(models.Model):
 
     def __str__(self): #How To Get data
         return self.detail
-    def was_published_recently(self):
-        return self.dateTime >= timezone.now() - datetime.timedelta(days=1)
+
+    def get_abs(self):
+        return abs(self.money)

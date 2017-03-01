@@ -9,4 +9,5 @@ urlpatterns = [
 	url(r'^save/$',views.save, name='save'),
 	url(r'^(?P<page>[0-9]+)/olderPage/$', views.olderPage, name='olderPage'),
 	url(r'^(?P<page>[0-9]+)/newerPage/$', views.newerPage, name='newerPage'),
+	url(r'^savecsv/$', views.saveCSVFile, name='saveCSVFile'),
 ]

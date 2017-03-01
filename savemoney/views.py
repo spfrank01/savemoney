@@ -1,8 +1,9 @@
+import csv
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
-from django.views import generic
-from django.shortcuts import render
+#from django.views import generic
+#from django.shortcuts import render
 from django.utils import timezone
 from .models import SaveMoney
 
@@ -21,7 +22,6 @@ def index(request):
 
 def detail(request, page=1):
     latest_detail_list = SaveMoney.objects.order_by('-dateTime')[(int(page)-1)*5:int(page)*5]
-    thisPage = page
     total=0
     count=0
     all_detail_list = SaveMoney.objects.order_by('-dateTime')[:]
@@ -29,15 +29,12 @@ def detail(request, page=1):
     	total += i.money
     	count += 1
     lastPage = int((count-1)/5+1)
-    context = {'latest_detail_list': latest_detail_list, 
+    context = {'latest_detail_list': latest_detail_list,
     			 	'total':total,
     			 	'page':int(page),
     			 	'lastPage':lastPage}
     return render(request, 'savemoney/showdetail.html', context)
 
-#def saveValue(request):
-#p = Person.objects.create(first_name="Bruce", last_name="Springsteen")
-	#data = SaveMoney.objects.create()	
 
 def save(request):
 	try:
@@ -62,3 +59,13 @@ def olderPage(request, page):
 def newerPage(request, page):
 	newerPage = str(int(page) -1)
 	return HttpResponseRedirect(reverse('SaveMoney:detail', args=(newerPage)))
+
+def saveCSVFile(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="detailALl.csv"'
+
+    writer = csv.writer(response)
+    all_detail_list = SaveMoney.objects.order_by('dateTime')[:]
+    for index in  all_detail_list:
+        writer.writerow([index.dateTime, index.detail, index.money])
+    return response
