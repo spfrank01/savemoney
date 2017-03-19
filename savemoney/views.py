@@ -1,21 +1,12 @@
 import csv
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
-#from django.views import generic
-#from django.shortcuts import render
 from django.utils import timezone
+
 from .models import SaveMoney
 
-#IndexView(generic.DetailView):
-#    model = SaveMoney
-#    template_name = 'savemoney/index.html'
 
-#    def get_queryset(self):
-#        """Return the last five published questions."""
-#        return Question.objects.order_by('-pub_date')[:10]
-    #context_object_name = 'latest_question_list'
-#income, expenses
 thisPage=0
 def index(request):
     return render(request, 'savemoney/index.html')
@@ -36,7 +27,7 @@ def detail(request, page=1):
     return render(request, 'savemoney/showdetail.html', context)
 
 
-def save(request):
+def saveDatailtoModel(request):
 	try:
 		detail = request.POST['detail']
 		money = request.POST['moneyValue']
@@ -60,7 +51,8 @@ def newerPage(request, page):
 	newerPage = str(int(page) -1)
 	return HttpResponseRedirect(reverse('SaveMoney:detail', args=(newerPage)))
 
-def saveCSVFile(request):
+
+def downloadCSVFile(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="detailALl.csv"'
 
@@ -69,3 +61,33 @@ def saveCSVFile(request):
     for index in  all_detail_list:
         writer.writerow([index.dateTime, index.detail, index.money])
     return response
+
+def saveCSVFile(request):
+    if request.method == 'POST' and request.FILES["csvFile"]:
+        csvFile = request.FILES["csvFile"].read()
+        SaveMoney.objects.all().delete()
+
+        csvData = str(csvFile)
+        first=2
+        end = csvData.find(',')
+        while end>0 and first>0:
+            dateTime = csvData[first:end]
+            first = end + 1
+            end = csvData.find(',', first)
+
+            detail = csvData[first:end]
+            first = end + 1
+            end = csvData.find('r', first) - 1
+
+            money = int(csvData[first:end])
+            first = end + 4
+            end = csvData.find(',', first)
+            saveData(detail, money, dateTime)
+
+    return HttpResponseRedirect(reverse('SaveMoney:detail', args=('1')))
+
+def saveData(detail,money,dateTime):
+    saveData = SaveMoney(detail=detail, money=money, dateTime=dateTime)
+    saveData.save()
+    return 0
+

@@ -11,6 +11,7 @@
 <h1>บัญชีรายรับรายจ่าย</h1>
 
 
+
 {% if latest_detail_list %}
 	<table class="table1" >
 	<tr>
@@ -35,7 +36,7 @@
     {% endfor %}
     </table>
     <table class="total">
-    	<tr ><td >Total : {{total}}</td></tr>
+    	<tr ><td >Total : {{total}} </td></tr>
     </table>
 {% else %}
     <p>No Detail</p>
@@ -65,7 +66,7 @@
         <th> วันที่</th>
         <th> เพิ่ม</th>
     </tr>
-    <form action="{% url 'SaveMoney:save' %}" method="post" target="_self">
+    <form action="{% url 'SaveMoney:saveDatailtoModel' %}" method="post" target="_self">
 {% csrf_token %}
     <tr>
         <td><input type="text" name="detail"> </td>
@@ -77,6 +78,14 @@
     </tr></form>
 </table>
 <br>
-<div class="saveCSVFile"><a href="{% url 'SaveMoney:saveCSVFile' %}">Download CSV File</a></div>
+<div class="downloadCSVFile"><a href="{% url 'SaveMoney:downloadCSVFile' %}">Download CSV File</a></div>
+<h2>อัพโหลดรายรับรายจ่าย </h2>
+<form  action="{% url 'SaveMoney:saveCSVFile' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="csvFile" id="csvFile"/>
+    <label for="csvFile">Choose a file... </label>
+    <input type="submit" value="Upload" />
+</form>
+
 </body>
 </html>
